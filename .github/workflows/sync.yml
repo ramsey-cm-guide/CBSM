@@ -6,7 +6,7 @@ on:
   workflow_dispatch:         # "Run workflow" button for a manual sync
   push:
     branches: [main]
-    paths: ["site/index.html", "scraper/**", ".github/workflows/**"]
+    paths: ["site/index.html", "site/data/rules.csv", "scraper/**", ".github/workflows/**"]
 
 permissions:
   contents: write

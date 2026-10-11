@@ -9,6 +9,7 @@ An unofficial quick-reference site for Minnesota DHS's Community-Based Services 
 - **Bulletins.** Ramsey County ADS Case Management Bulletins, collected daily.
 - **Search.** Covers CBSM page titles, forms and bulletins. Acronyms like CADI, EW and PCA are expanded.
 - **What changed.** New bulletins and revised forms, checked daily.
+- **Rules feed.** `site/data/rules.csv` lists the CBSM-sourced numbers the Excel tracker's Rules tab checks itself against (day counts, dollar limits, dates).
 
 ## What's in here
 
@@ -24,6 +25,7 @@ scraper/forms.txt            extra form numbers to include, one per line
 scraper/requirements.txt     Python packages the sync needs
 site/index.html              the website
 site/data/                   written by the sync; the site reads from here
+site/data/rules.csv          edited by hand, not by the sync (see below)
 .github/workflows/sync.yml   runs the sync daily and publishes the site
 ```
 
@@ -37,9 +39,13 @@ Nothing. The sync runs every morning at about 5 AM Central. To run it now, go to
 - **Add a form:** add its number (and optionally its title) on a new line in `scraper/forms.txt`.
 - **Change a form's description:** edit `scraper/forms_catalog.json`.
 
+## Updating the rules feed
+
+When DHS changes a number the tracker uses, edit the matching row in `site/data/rules.csv` (ID, Value, Unit, Effective from, Last verified, Source) and commit. Committing the file redeploys the site. Trackers show the new number in the Rules tab's "Site value" column and flag it CHANGED until each case manager accepts it. Only CBSM-sourced rules go in this file; agency practice stays in the tracker.
+
 ## Things to know
 
 - **This is unofficial.** DHS's site is the authority on policy. CBSM links always open the official pages.
 - **Policy page changes aren't tracked.** DHS's site shows a bot check (CAPTCHA) to automated requests, so the sync doesn't download CBSM pages. Subscribe to DHS's DSD eLists for manual updates.
 - **If GovDelivery or eDocs block automated requests too,** the sync still succeeds and the log says so; the site keeps the links.
-- **The Excel tracker** reads only `site/data/changes.json` (new bulletins and revised forms). Nothing from the tracker is ever sent here.
+- **The Excel tracker** reads only `site/data/changes.json` (new bulletins and revised forms) and `site/data/rules.csv`. Nothing from the tracker is ever sent here.
